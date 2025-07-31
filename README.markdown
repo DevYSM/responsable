@@ -186,15 +186,12 @@ public function store(Request $request)
 **Session Data** (accessible via `responsable()`):
 
 ```php
-responsable();
-// Returns:
-// [
-//     'type' => 'success',
-//     'message' => 'Post created successfully',
-//     'code' => 201,
-//     'data' => ['title' => 'Post Title'],
-//     'errors' => []
-// ]
+responsable()->getAttributes(); // Return all response attributes
+responsable()->get('type'); // 'success'
+responsable()->get('message'); // 'Post created successfully'
+responsable()->get('code'); // 201
+responsable()->get('data'); // ['title' => 'Post Title']
+responsable()->get('errors'); // []
 ```
 
 #### Example 5: Error Redirect with Validation Errors
@@ -394,7 +391,7 @@ e.g., PHPStorm, VS Code):
 
 This creates a `_ide_helper.php` file that includes the `success` and `error` macros for both `Response`
 and `RedirectResponse`, as well as the `responsable()` and `responsable_forget()` helpers.
- 
+
 ## License
 
 This package is open-sourced under the [MIT License](LICENSE).

@@ -13,8 +13,8 @@ with optional pagination metadata.
 
 ## Requirements
 
-- PHP 8.2 or higher
-- Laravel 12.0 or higher
+- PHP 7.2 or higher
+- Laravel 6.0 or higher
 
 ## Installation
 
@@ -77,13 +77,11 @@ class PostController extends Controller
     "data": [
         {
             "id": 1,
-            "title": "Post 1",
-            ...
+            "title": "Post 1"
         },
         {
             "id": 2,
-            "title": "Post 2",
-            ...
+            "title": "Post 2"
         }
     ]
 }
@@ -116,13 +114,11 @@ public function paginated()
     "data": [
         {
             "id": 1,
-            "title": "Post 1",
-            ...
+            "title": "Post 1"
         },
         {
             "id": 2,
-            "title": "Post 2",
-            ...
+            "title": "Post 2"
         }
     ],
     "meta": {

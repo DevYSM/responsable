@@ -9,6 +9,7 @@ management in Laravel 12+ applications.
 
 - `success` and `error` macros for JSON API responses with optional pagination metadata.
 - `success` and `error` macros for web redirects with session-based flash or persistent data.
+- `apiSuccess()` and `apiError()` helper functions for cleaner syntax in controllers.
 - `responsable()` helper to retrieve session data in a structured format.
 - `responsable_forget()` helper to clear session data.
 - Supports Laravel's pagination (`LengthAwarePaginator`, `Paginator`, `CursorPaginator`).

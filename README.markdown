@@ -90,8 +90,10 @@ class PostController extends Controller
             "id": 2,
             "title": "Post 2"
         }
-    ]
-}
+    ],
+additional [
+more information about response
+]}
 ```
 
 #### Example 2: Fetching Paginated Posts

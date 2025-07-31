@@ -13,7 +13,10 @@
     "autoload": {
         "psr-4": {
             "YSM\\Responsable\\": "src/"
-        }
+        },
+        "files": [
+            "src/ResponsableHelpers.php"
+        ]
     },
     "require": {
         "php": ">=7.2",

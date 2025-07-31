@@ -1,6 +1,6 @@
 <?php
 
-namespace YSM\Responsable\Macros;
+namespace YSM\Responsable\Macros\Api;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Response;
 /**
  * @method static JsonResponse error(string $message = '', int $code = 422, array $errors = [])
  */
-class ErrorMacro
+class ApiErrorMacro
 {
     /**
      * Register services.

@@ -1,6 +1,6 @@
 <?php
 
-namespace YSM\Responsable\Macros;
+namespace YSM\Responsable\Macros\Api;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\JsonResponse;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Response;
 /**
  * @method static JsonResponse success(string $message = '', array|object $data = [], int $code = 200, Paginator|LengthAwarePaginator|CursorPaginator $paginator = null)
  */
-class SuccessMacro
+class ApiSuccessMacro
 {
     /**
      * Register services.

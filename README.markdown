@@ -164,6 +164,31 @@ public function errors(Request $request)
 }
 ```
 
+### Use `apiSuccess() || apiError()` Helpers
+
+You can also use the `apiSuccess()` and `apiError()` helpers for cleaner syntax:
+
+```php
+
+#### Example 1: Fetching a Collection of Posts with Helpers
+public function index()
+{
+    $posts = Post::filterable(PostFilter::class)->limit(5)->get();
+
+    return apiSuccess('Posts fetched success', PostResource::collection($posts));
+}
+
+#### Example 3: Handling JSON Errors with Helpers
+public function errors(Request $request)
+{
+    if (isset($request->case)) {
+        return apiSuccess('Posts fetched success');
+    }
+
+    return apiError('Posts fetched error');
+}
+```
+
 ### Web Redirect Macros
 
 #### Example 4: Success Redirect with Session Data

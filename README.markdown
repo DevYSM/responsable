@@ -1,20 +1,23 @@
 # YSM Responsable
 
-A Laravel package that provides standardized response macros for both JSON (API) and web (redirect) responses. It
-adds `success` and `error` macros to the `Response` facade (for JSON) and `RedirectResponse` class (for web), enabling
-consistent response handling in Laravel 12+ applications.
+A Laravel package that provides standardized response macros for both JSON (API) and web (redirect) responses, along
+with helper functions to manage session data. It adds `success` and `error` macros to the `Response` facade (for JSON)
+and `RedirectResponse` class (for web), and provides `responsable()` and `responsable_forget()` helpers for session data
+management in Laravel 12+ applications.
 
 ## Features
 
 - `success` and `error` macros for JSON API responses with optional pagination metadata.
 - `success` and `error` macros for web redirects with session-based flash or persistent data.
+- `responsable()` helper to retrieve session data in a structured format.
+- `responsable_forget()` helper to clear session data.
 - Supports Laravel's pagination (`LengthAwarePaginator`, `Paginator`, `CursorPaginator`).
 - Lightweight and easy to integrate.
 
 ## Requirements
 
-- PHP 8.2 or higher
-- Laravel 12.0 or higher
+- PHP 7.2 or higher
+- Laravel 6.0 or higher
 
 ## Installation
 
@@ -29,7 +32,7 @@ manually add the provider to `config/app.php`:
 
 ```php
 'providers' => [
-    // Other providers...
+    // Other providers
     YSM\Responsable\ResponsableServiceProvider::class,
 ],
 ```
@@ -37,7 +40,8 @@ manually add the provider to `config/app.php`:
 ## Usage
 
 The package provides `success` and `error` macros for both JSON responses (via `Response` facade or `response()` helper)
-and web redirects (via `RedirectResponse`).
+and web redirects (via `RedirectResponse`), along with helper functions `responsable()` and `responsable_forget()` for
+session data management.
 
 ### JSON Response Macros
 
@@ -79,13 +83,11 @@ class PostController extends Controller
     "data": [
         {
             "id": 1,
-            "title": "Post 1",
-            ...
+            "title": "Post 1"
         },
         {
             "id": 2,
-            "title": "Post 2",
-            ...
+            "title": "Post 2"
         }
     ]
 }
@@ -181,13 +183,18 @@ public function store(Request $request)
 }
 ```
 
-**Session Data** (accessible in the view):
+**Session Data** (accessible via `responsable()`):
 
 ```php
-session('response_type'); // 'success'
-session('message'); // 'Post created successfully'
-session('code'); // 201
-session('data'); // ['title' => 'Post Title']
+responsable();
+// Returns:
+// [
+//     'type' => 'success',
+//     'message' => 'Post created successfully',
+//     'code' => 201,
+//     'data' => ['title' => 'Post Title'],
+//     'errors' => []
+// ]
 ```
 
 #### Example 5: Error Redirect with Validation Errors
@@ -209,13 +216,18 @@ public function update(Request $request, Post $post)
 }
 ```
 
-**Session Data (Error)**:
+**Session Data** (accessible via `responsable()`):
 
 ```php
-session('response_type'); // 'error'
-session('message'); // 'Failed to update post'
-session('code'); // 422
-session('errors'); // ['title' => 'Update failed']
+responsable();
+// Returns:
+// [
+//     'type' => 'error',
+//     'message' => 'Failed to update post',
+//     'code' => 422,
+//     'data' => [],
+//     'errors' => ['title' => 'Update failed']
+// ]
 ```
 
 #### Example 6: Persistent Session Data
@@ -233,6 +245,89 @@ public function store(Request $request)
 
     return redirect()->route('posts.index')->success('Post created successfully', 201, ['title' => $validated['title']], true);
 }
+```
+
+### Helper Functions
+
+#### `responsable()`
+
+Retrieve session data stored by web macros in a structured array:
+
+```php
+$data = responsable();
+```
+
+**Example in a Controller**:
+
+```php
+public function show()
+{
+    $response = responsable();
+    if ($response['type'] === 'success') {
+        // Handle success
+        return view('posts.index', ['message' => $response['message']]);
+    }
+    // Handle error
+    return view('posts.index', ['error' => $response['message']]);
+}
+```
+
+#### `responsable_forget()`
+
+Clear session data stored by web macros:
+
+```php
+responsable_forget();
+```
+
+**Example in a Controller**:
+
+```php
+public function clear()
+{
+    responsable_forget();
+    return redirect()->route('posts.index');
+}
+```
+
+### Accessing Session Data in Views
+
+Use the `responsable()` helper in Blade views for a cleaner interface:
+
+```blade
+@php
+    $response = responsable();
+@endphp
+
+@if ($response['type'])
+    <div class="alert alert-{{ $response['type'] }}">
+        <strong>{{ $response['message'] }}</strong>
+        @if ($response['errors'])
+            <ul>
+                @foreach ($response['errors'] as $field => $error)
+                    <li>{{ $field }}: {{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
+@endif
+```
+
+Alternatively, access session data directly:
+
+```blade
+@if (session('response_type'))
+    <div class="alert alert-{{ session('response_type') }}">
+        <strong>{{ session('message') }}</strong>
+        @if (session('errors'))
+            <ul>
+                @foreach (session('errors') as $field => $error)
+                    <li>{{ $field }}: {{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
+@endif
 ```
 
 ### Macro Signatures
@@ -282,28 +377,10 @@ You can also use the `response()` helper for JSON responses:
 return response()->success('Operation successful', ['data' => 'value'], 200);
 ```
 
-## Accessing Session Data in Views
-
-For web redirects, access session data in your Blade views:
-
-```blade
-@if (session('response_type'))
-    <div class="alert alert-{{ session('response_type') }}">
-        <strong>{{ session('message') }}</strong>
-        @if (session('errors'))
-            <ul>
-                @foreach (session('errors') as $field => $error)
-                    <li>{{ $field }}: {{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-    </div>
-@endif
-```
-
 ## IDE Support
 
-To enable autocompletion for the `success` and `error` macros in your IDE (e.g., PHPStorm, VS Code):
+To enable autocompletion for the `success`, `error`, `responsable()`, and `responsable_forget()` functions in your IDE (
+e.g., PHPStorm, VS Code):
 
 1. Install the `barryvdh/laravel-ide-helper` package:
    ```bash
@@ -315,6 +392,9 @@ To enable autocompletion for the `success` and `error` macros in your IDE (e.g.,
    php artisan ide-helper:generate
    ```
 
+This creates a `_ide_helper.php` file that includes the `success` and `error` macros for both `Response`
+and `RedirectResponse`, as well as the `responsable()` and `responsable_forget()` helpers.
+ 
 ## License
 
 This package is open-sourced under the [MIT License](LICENSE).

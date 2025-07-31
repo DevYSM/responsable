@@ -1,6 +1,7 @@
 <?php
 
-namespace YSM\Responsable;
+
+use Illuminate\Support\Fluent;
 
 /**
  * Retrieve session data stored by Responsable web macros.
@@ -8,15 +9,15 @@ namespace YSM\Responsable;
  * @return array<string, mixed>
  */
 if (!function_exists('responsable')) {
-    function responsable(): array
+    function responsable(): Fluent
     {
-        return [
+        return new Fluent([
             'type' => session('response_type'),
             'message' => session('message'),
             'code' => session('code'),
             'data' => session('data', []),
             'errors' => session('errors', []),
-        ];
+        ]);
     }
 }
 

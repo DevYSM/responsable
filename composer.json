@@ -1,0 +1,31 @@
+{
+    "name": "ysm/responsable",
+    "description": "A Laravel package for standardized JSON response macros",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "json",
+        "response",
+        "api",
+        "macros"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "YSM\\Responsable\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "YSM\\Responsable\\ResponsableServiceProvider"
+            ]
+        }
+    }
+}

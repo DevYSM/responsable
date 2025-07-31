@@ -20,6 +20,7 @@ if (!function_exists('responsable')) {
             'code' => session('code'),
             'data' => session('data', []),
             'errors' => session('errors', []),
+            'additional' => [],
         ]);
     }
 }
@@ -30,7 +31,7 @@ if (!function_exists('responsable_forget')) {
      */
     function responsable_forget(): void
     {
-        session()->forget(['response_type', 'message', 'code', 'data', 'errors']);
+        session()->forget(['response_type', 'message', 'code', 'data', 'errors','additional']);
     }
 }
 
@@ -42,6 +43,7 @@ if (!function_exists('apiSuccess')) {
         string                                         $message = '',
         array|object                                   $data = [],
         int                                            $code = 200,
+        array                                          $additional = [],
         Paginator|LengthAwarePaginator|CursorPaginator $paginator = null
     ): \Illuminate\Http\JsonResponse
     {
@@ -49,7 +51,9 @@ if (!function_exists('apiSuccess')) {
             message: $message,
             data: $data,
             code: $code,
+            additional :[],
             paginator: $paginator
+
         );
     }
 }

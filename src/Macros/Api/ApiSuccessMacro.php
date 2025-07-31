@@ -22,6 +22,7 @@ class ApiSuccessMacro
             string                                         $message = '',
             array|object                                   $data = [],
             int                                            $code = 200,
+            array                                          $additional = [],
             Paginator|LengthAwarePaginator|CursorPaginator $paginator = null
         ): JsonResponse {
 
@@ -30,6 +31,7 @@ class ApiSuccessMacro
                 'message' => $message,
                 'code' => $code,
                 'data' => $data,
+                'additional' =>  $additional,
             ];
 
             if ($paginator) {

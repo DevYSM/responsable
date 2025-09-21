@@ -42,7 +42,7 @@ if (!function_exists('success')) {
         string                                         $message = '',
         array|object                                   $data = [],
         int                                            $code = 200,
-        ?Paginator|LengthAwarePaginator|CursorPaginator $paginator = null
+        Paginator|LengthAwarePaginator|CursorPaginator|null $paginator = null
     ): \Illuminate\Http\JsonResponse
     {
         return Response::success(

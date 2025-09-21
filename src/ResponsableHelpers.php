@@ -7,7 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Fluent;
 
 /**
- * Retrieve session data stored by Responsable web macros.
+ * Retrieve session data stored by the Responsible web macros.
  *
  * @return array<string, mixed>
  */
@@ -26,7 +26,7 @@ if (!function_exists('responsable')) {
 
 if (!function_exists('responsable_forget')) {
     /**
-     * Forget session data stored by Responsable web macros.
+     * Forget session data stored by the Responsible web macros.
      */
     function responsable_forget(): void
     {
@@ -34,15 +34,15 @@ if (!function_exists('responsable_forget')) {
     }
 }
 
-if (!function_exists('apiSuccess')) {
+if (!function_exists('success')) {
     /**
-     * Forget session data stored by Responsable web macros.
+     * Forget session data stored by the Responsible web macros.
      */
-    function apiSuccess(
+    function success(
         string                                         $message = '',
         array|object                                   $data = [],
         int                                            $code = 200,
-        Paginator|LengthAwarePaginator|CursorPaginator $paginator = null
+        ?Paginator|LengthAwarePaginator|CursorPaginator $paginator = null
     ): \Illuminate\Http\JsonResponse
     {
         return Response::success(
@@ -54,11 +54,11 @@ if (!function_exists('apiSuccess')) {
     }
 }
 
-if (!function_exists('apiError')) {
+if (!function_exists('error')) {
     /**
-     * Forget session data stored by Responsable web macros.
+     * Forget session data stored by the Responsible web macros.
      */
-    function apiError(string $message = '', int $code = 422, array $errors = []): \Illuminate\Http\JsonResponse
+    function error(string $message = '', int $code = 422, array $errors = []): \Illuminate\Http\JsonResponse
     {
         return Response::error(
             message: $message,

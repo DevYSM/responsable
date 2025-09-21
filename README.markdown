@@ -9,7 +9,7 @@ management in Laravel 12+ applications.
 
 - `success` and `error` macros for JSON API responses with optional pagination metadata.
 - `success` and `error` macros for web redirects with session-based flash or persistent data.
-- `apiSuccess()` and `apiError()` helper functions for cleaner syntax in controllers.
+- `success()` and `error()` helper functions for cleaner syntax in controllers.
 - `responsable()` helper to retrieve session data in a structured format.
 - `responsable_forget()` helper to clear session data.
 - Supports Laravel's pagination (`LengthAwarePaginator`, `Paginator`, `CursorPaginator`).
@@ -167,7 +167,7 @@ public function errors(Request $request)
 
 ### Use `apiSuccess() || apiError()` Helpers
 
-You can also use the `apiSuccess()` and `apiError()` helpers for cleaner syntax:
+You can also use the `success()` and `error()` helpers for cleaner syntax:
 
 ```php
 
@@ -176,17 +176,17 @@ public function index()
 {
     $posts = Post::filterable(PostFilter::class)->limit(5)->get();
 
-    return apiSuccess('Posts fetched success', PostResource::collection($posts));
+    return success('Posts fetched success', PostResource::collection($posts));
 }
 
 #### Example 3: Handling JSON Errors with Helpers
 public function errors(Request $request)
 {
     if (isset($request->case)) {
-        return apiSuccess('Posts fetched success');
+        return success('Posts fetched success');
     }
 
-    return apiError('Posts fetched error');
+    return error('Posts fetched error');
 }
 ```
 
